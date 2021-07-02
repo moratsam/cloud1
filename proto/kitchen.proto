@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+service Kitchen {
+	rpc ServeSalad (SaladRequest) returns (SaladResponse);
+}
+
+enum FromDictionary{
+	FALSE = 0;
+	TRUE = 1;
+}
+
+message SaladRequest{
+	FromDictionary from_dictionary = 1;
+	int32 salad_size = 2;
+}
+
+message SaladResponse{
+	repeated string word = 1;
+}
