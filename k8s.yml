@@ -44,7 +44,7 @@ spec:
       spec:
          containers:
             - name: kitchen
-              image: moratsam/kitchen:0.1
+              image: moratsam/kitchen:0.2
               ports:
                  - containerPort: 50051
 
