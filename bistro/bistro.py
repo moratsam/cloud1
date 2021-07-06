@@ -12,7 +12,7 @@ from kitchen_pb2_grpc import KitchenStub
 app = Flask(__name__)
 
 #in case env var is not set, default to localhost
-kitchen_host = os.getenv("KITCHEN_HOST", "192.168.0.4")
+kitchen_host = os.getenv("KITCHEN_HOST", "127.0.0.1")
 kitchen_channel = grpc.insecure_channel(f"{kitchen_host}:50051")
 kitchen_client = KitchenStub(kitchen_channel)
 
@@ -21,7 +21,6 @@ def render_index():
 	salad_request = SaladRequest(
 		from_dictionary=FromDictionary.TRUE, salad_size=13
 	)
-	logging.warning(f"Tuki je vse roznato\n")
 	try:
 		kitchen_response = kitchen_client.ServeSalad(salad_request)
 		print(kitchen_response.word)
