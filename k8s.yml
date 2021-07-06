@@ -1,0 +1,78 @@
+#DEPL - BISTRO
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: bistro
+   labels:
+      app: bistro
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+         app: bistro
+   template:
+      metadata:
+         labels:
+            app: bistro
+      spec:
+         containers:
+            - name: bistro
+              image: moratsam/bistro:0.1
+              env:
+                 - name:  KITCHEN_HOST 
+                   value: kitchen
+              ports:
+                 - containerPort: 5000
+
+---
+#DEPL - KITCHEN
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: kitchen
+   labels:
+      app: kitchen
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+         app: kitchen
+   template:
+      metadata:
+         labels:
+            app: kitchen
+      spec:
+         containers:
+            - name: kitchen
+              image: moratsam/kitchen:0.1
+              ports:
+                 - containerPort: 50051
+
+---
+#SERV - BISTRO
+apiVersion: v1
+kind: Service
+metadata:
+   name: bistro
+spec:
+   type: LoadBalancer
+   selector:
+      app: bistro
+   ports:
+      -  protocol: TCP
+         port: 5000
+         targetPort: 5000
+
+---
+#SERV - KITCHEN
+apiVersion: v1
+kind: Service
+metadata:
+   name: kitchen
+spec:
+   selector:
+      app: kitchen
+   ports:
+      -  protocol: TCP
+         port: 50051
+         targetPort: 50051
